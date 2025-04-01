@@ -5,13 +5,18 @@ export function findAllCourses() {
     return Database.courses;
 }
 
+export function getCourse(cid) {
+    const { courses } = Database.courses;
+    const course = courses.find((c) => c._id === cid)
+    return course
+}
+
 export function findCoursesForEnrolledUser(userId) {
     const { courses, enrollments } = Database;
     const enrolledCourses = courses.filter((course) =>
         enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
     return enrolledCourses;
 }
-
 
 export function createCourse(course) {
     const newCourse = { ...course, _id: uuidv4() };

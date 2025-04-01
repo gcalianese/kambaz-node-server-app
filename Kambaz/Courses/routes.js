@@ -7,6 +7,12 @@ export default function CourseRoutes(app) {
         res.send(courses);
     });
 
+    app.get("/api/courses/:cid", (req, res) => {
+        const { cid } = req.params;
+        const status = dao.getCourse(cid);
+        res.send(status);
+    });
+
     app.delete("/api/courses/:courseId", (req, res) => {
         const { courseId } = req.params;
         const status = dao.deleteCourse(courseId);
