@@ -25,10 +25,11 @@ export default function WorkingWithArrays(app) {
     app.get("/lab5/todos", (req, res) => {
         const { completed } = req.query;
         if (completed !== undefined) {
-            const completedBool = completed === "true";
+           // const completedBool = completed === "true";
             const completedTodos = todos.filter(
-                (t) => t.completed === completedBool);
+                (t) => t.completed === true);
             res.json(completedTodos);
+            console.log("Completed todos: " + JSON.stringify(completedTodos))
             return;
         }
         res.json(todos);
@@ -89,7 +90,7 @@ export default function WorkingWithArrays(app) {
     app.get("/lab5/todos/:id/completed/:comp", (req, res) => {
         const { id, comp } = req.params;
         const todo = todos.find((t) => t.id === parseInt(id));
-        todo.completed = comp;
+        todo.completed = comp === "true"
         res.json(todos);
     });
 

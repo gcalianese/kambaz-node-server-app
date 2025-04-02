@@ -26,7 +26,7 @@ export function createAssignment(assignment) {
 export function deleteAssignment(cid, aid) {
     const assignments = Database.assignments;
     Database.assignments = assignments.filter((a) => !(a.course === cid && a._id === aid))
-
+    return 200;
 }
 
 export function updateAssignment(assignmentUpdates) {
