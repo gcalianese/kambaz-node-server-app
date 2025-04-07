@@ -1,4 +1,5 @@
 import express from 'express';
+import mongoose from "mongoose";
 import Hello from "./Hello.js";
 import Lab5 from "./Lab5/index.js";
 import CourseRoutes from "./Kambaz/Courses/routes.js";
@@ -31,6 +32,9 @@ if (process.env.NODE_ENV !== "development") {
     };
 }
 app.use(session(sessionOptions));
+const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kambaz"
+mongoose.connect(CONNECTION_STRING);
+mongoose.connect(CONNECTION_STRING);
 app.use(express.json());
 Lab5(app);
 Hello(app);

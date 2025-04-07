@@ -29,7 +29,6 @@ export default function WorkingWithArrays(app) {
             const completedTodos = todos.filter(
                 (t) => t.completed === true);
             res.json(completedTodos);
-            console.log("Completed todos: " + JSON.stringify(completedTodos))
             return;
         }
         res.json(todos);
