@@ -1,5 +1,6 @@
 
 import model from "./model.js";
+import EnrollmentsModel from "../Enrollments/model.js"
 export const createUser = (user) => { }
 
 /*
@@ -22,3 +23,16 @@ export const findUsersByPartialName = (partialName) => {
         $or: [{ firstName: { $regex: regex } }, { lastName: { $regex: regex } }],
     });
 };
+
+
+export async function getUsersForCourse(cid) {
+    try {
+        const enrollments = await EnrollmentsModel.find({course: cid});
+        const userIds = enrollments.map(enrollment => enrollment.user);
+        const users = await model.find({ _id: { $in: userIds } });
+        return users;
+    } catch (error) {
+        console.error("Error fetching users for course:", error);
+        throw error;
+    }
+}

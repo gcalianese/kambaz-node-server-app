@@ -1,6 +1,7 @@
 import * as dao from "./dao.js";
 import * as courseDao from "../Courses/dao.js";
 import * as enrollmentsDao from "../Enrollments/dao.js";
+import { model } from "mongoose";
 
 export default function UserRoutes(app) {
     const createUser = (req, res) => { };
@@ -17,12 +18,16 @@ export default function UserRoutes(app) {
             const users = await dao.findUsersByPartialName(name);
             res.json(users);
             return;
-          }
-      
+        }
+
         const users = await dao.findAllUsers();
         res.json(users);
     };
-    const findUserById = (req, res) => { };
+    const findUserById = async (req, res) => {
+        const { userId } = req.params;
+        const user = await dao.findUserById(userId);
+        res.json(user);
+    };
     const updateUser = (req, res) => {
         const userId = req.params.userId;
         const userUpdates = req.body;
@@ -100,6 +105,19 @@ export default function UserRoutes(app) {
         enrollmentsDao.enrollUserInCourse(currentUser._id, newCourse._id);
         res.json(newCourse);
     };
+
+
+    app.get("/api/users/course/:cid", async (req, res) => {
+        const { cid } = req.params;
+        try {
+          const users = await dao.getUsersForCourse(cid);
+          res.send(users);
+        } catch (error) {
+          res.status(500).send({ error: "Failed to fetch users" });
+        }
+      });
+
+
     app.post("/api/users/current/courses", createCourse);
     app.get("/api/users/coursesAll", allCourses);
     app.get("/api/users/:userId/courses", findCoursesForEnrolledUser);
