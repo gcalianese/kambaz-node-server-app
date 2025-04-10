@@ -5,7 +5,11 @@ import { model } from "mongoose";
 
 export default function UserRoutes(app) {
     const createUser = (req, res) => { };
-    const deleteUser = (req, res) => { };
+    const deleteUser = async (req, res) => {
+        const status = await dao.deleteUser(req.params.userId);
+        res.json(status);
+
+    };
     const findAllUsers = async (req, res) => {
         const { role, name } = req.query;
         if (role) {
@@ -110,12 +114,12 @@ export default function UserRoutes(app) {
     app.get("/api/users/course/:cid", async (req, res) => {
         const { cid } = req.params;
         try {
-          const users = await dao.getUsersForCourse(cid);
-          res.send(users);
+            const users = await dao.getUsersForCourse(cid);
+            res.send(users);
         } catch (error) {
-          res.status(500).send({ error: "Failed to fetch users" });
+            res.status(500).send({ error: "Failed to fetch users" });
         }
-      });
+    });
 
 
     app.post("/api/users/current/courses", createCourse);
