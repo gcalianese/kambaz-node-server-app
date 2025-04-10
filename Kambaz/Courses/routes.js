@@ -46,9 +46,6 @@ export default function CourseRoutes(app) {
         const course = await dao.createCourse(req.body);
         res.json(course);
     });
-
-
-
 }
 
 
