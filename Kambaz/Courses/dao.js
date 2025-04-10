@@ -24,12 +24,16 @@ export function createCourse(course) {
     return model.create(newCourse);
 }
 
-export function deleteCourse(courseId) {
-    const { courses, enrollments } = Database;
-    Database.courses = courses.filter((course) => course._id !== courseId);
-    Database.enrollments = enrollments.filter(
-        (enrollment) => enrollment.course !== courseId
-    );
+export async function deleteCourse(courseId) {
+    const { enrollments } = Database;
+    try {
+        await model.deleteOne({ _id: courseId });
+        Database.enrollments = enrollments.filter(
+            (enrollment) => enrollment.course !== courseId
+        );
+    } catch (error) {
+        console.error("Error deleting course: ", error);
+    }
 }
 
 export function updateCourse(courseId, courseUpdates) {
