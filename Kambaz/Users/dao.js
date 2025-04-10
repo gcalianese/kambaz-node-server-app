@@ -1,14 +1,12 @@
 
 import model from "./model.js";
 import EnrollmentsModel from "../Enrollments/model.js"
-export const createUser = (user) => { }
+import { v4 as uuidv4 } from "uuid";
 
-/*
+export const createUser = (user) => {
     const newUser = { ...user, _id: uuidv4() };
-    users = [...users, newUser];
-    return newUser;
+    return model.create(newUser);
 };
-*/
 
 export const findAllUsers = () => model.find();
 export const findUserById = (userId) => model.findById(userId);
@@ -27,7 +25,7 @@ export const findUsersByPartialName = (partialName) => {
 
 export async function getUsersForCourse(cid) {
     try {
-        const enrollments = await EnrollmentsModel.find({course: cid});
+        const enrollments = await EnrollmentsModel.find({ course: cid });
         const userIds = enrollments.map(enrollment => enrollment.user);
         const users = await model.find({ _id: { $in: userIds } });
         return users;

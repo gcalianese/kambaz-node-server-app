@@ -4,7 +4,11 @@ import * as enrollmentsDao from "../Enrollments/dao.js";
 import { model } from "mongoose";
 
 export default function UserRoutes(app) {
-    const createUser = (req, res) => { };
+    const createUser = async (req, res) => {
+        const user = await dao.createUser(req.body);
+        res.json(user);
+    };
+
     const deleteUser = async (req, res) => {
         const status = await dao.deleteUser(req.params.userId);
         res.json(status);
@@ -37,9 +41,9 @@ export default function UserRoutes(app) {
         const userUpdates = req.body;
         await dao.updateUser(userId, userUpdates);
         const currentUser = req.session["currentUser"];
-       if (currentUser && currentUser._id === userId) {
-         req.session["currentUser"] = { ...currentUser, ...userUpdates };
-       }
+        if (currentUser && currentUser._id === userId) {
+            req.session["currentUser"] = { ...currentUser, ...userUpdates };
+        }
         res.send(currentUser);
     };
     const signup = async (req, res) => {
