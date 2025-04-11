@@ -20,8 +20,7 @@ export function findCoursesForEnrolledUser(userId) {
 }
 
 export function createCourse(course) {
-    const newCourse = { ...course, _id: uuidv4() };
-    return model.create(newCourse);
+    return model.create({...course, _id: course._id});
 }
 
 export async function deleteCourse(courseId) {
