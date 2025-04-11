@@ -1,9 +1,7 @@
-import Database from "../Database/index.js";
-import { v4 as uuidv4 } from "uuid";
 import model from "./model.js"
 
-export function getEnrollments() {
-    const { enrollments } = Database;
+export async function getEnrollments() {
+    const enrollments = await model.find();
     return enrollments;
 }
 
