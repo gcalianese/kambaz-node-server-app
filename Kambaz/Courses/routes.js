@@ -1,5 +1,6 @@
 import * as dao from "./dao.js";
 import * as modulesDao from "../Modules/dao.js";
+import * as enrollmentsDao from "../Enrollments/dao.js"
 
 export default function CourseRoutes(app) {
     app.get("/api/courses", async (req, res) => {
@@ -16,6 +17,7 @@ export default function CourseRoutes(app) {
     app.delete("/api/courses/:courseId", async (req, res) => {
         const { courseId } = req.params;
         const status = await dao.deleteCourse(courseId);
+        const eStatus = await enrollmentsDao.deleteEnrollmentsForCourse({course : courseId})
         res.send(status);
     });
 

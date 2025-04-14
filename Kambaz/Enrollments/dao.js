@@ -20,3 +20,7 @@ export function enrollUserInCourse(user, course) {
 export function unenrollUserFromCourse(user, course) {
     return model.deleteOne({ user, course });
 }
+
+export function deleteEnrollmentsForCourse(courseId) {
+    return model.deleteMany(courseId);
+}
