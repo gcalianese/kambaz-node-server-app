@@ -1,34 +1,33 @@
-import Database from "../Database/index.js";
 import model from "./model.js"
+import enrollmentModel from "../Enrollments/model.js"
+import assignmentModel from "../Assignments/model.js"
+import moduleModel from "../Modules/model.js"
 
 export function findAllCourses() {
     return model.find();
 }
 
 export function getCourse(cid) {
-    const { courses } = Database.courses;
-    const course = courses.find((c) => c._id === cid)
-    return course
+    return model.findById(cid);
 }
 
-export function findCoursesForEnrolledUser(userId) {
-    const { courses, enrollments } = Database;
-    const enrolledCourses = courses.filter((course) =>
-        enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
-    return enrolledCourses;
-}
+export const findCoursesForEnrolledUser = async (userId) => {
+    const enrollments = await enrollmentModel.find({ user: userId });
+    const courseIds = enrollments.map((enrollment) => enrollment.course);
+    const courses = await model.find({ _id: { $in: courseIds } });
+    return courses;
+};
 
 export function createCourse(course) {
-    return model.create({...course, _id: course._id});
+    return model.create({ ...course, _id: course._id });
 }
 
 export async function deleteCourse(courseId) {
-    const { enrollments } = Database;
     try {
         await model.deleteOne({ _id: courseId });
-        Database.enrollments = enrollments.filter(
-            (enrollment) => enrollment.course !== courseId
-        );
+        await enrollmentModel.deleteMany({course : courseId})
+        await moduleModel.deleteMany({course : courseId})
+        await assignmentModel.deleteMany({course : courseId})
     } catch (error) {
         console.error("Error deleting course: ", error);
     }
