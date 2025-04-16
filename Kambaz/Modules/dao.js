@@ -6,12 +6,11 @@ export function findModulesForCourse(courseId) {
 }
 
 export function createModule(module) {
-    const newModule = { ...module, _id: uuidv4() };
-    return model.create(newModule)
+    return model.create(module);
 }
 
-export function deleteModule(moduleId) {
-    return model.deleteOne({ _id: moduleId });
+export async function deleteModule(moduleId) {
+    return await model.deleteOne({ _id: moduleId });
 }
 
 export function updateModule(moduleId, moduleUpdates) {
